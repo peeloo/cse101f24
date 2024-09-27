@@ -1,23 +1,17 @@
-# cse101-pt
-
 CSE-101 Programming Assignment Repository
 
 ## How to work on an assignment
 
-- For each assignment you will need to create a new branch and work on the new branch. In order to create a new branch, you can use the following code (make sure you use lower case, e.g: pa1, pa2, pa3, ...):
-```bash
-git checkout -b pa{ID}
-```
-- Create a folder to for the assignment and work on this directory for your assignment:
+- For each assignment you will need to create a new directory and work in the new directory. 
 ```bash
 mkdir pa{ID}
 ```
 - When you make sufficient changes in your code and want to commit your changes, you can use following code:
 ```bash
-git add {modified-files}
+git add {modified/added-files}
 git commit -m {explanatory-message-for-the-changes}
 ``` 
-- Above code will mark your changes on your local computer. In order to update your gitlab repository you need to push your changes using below code (you may be asked your password or passphrase):
+- Above code will mark your changes on your local computer. In order to update your remote gitlab repository you need to push your changes using below code (you may be asked your password or passphrase):
 ```bash
 git push
 ```
@@ -35,7 +29,7 @@ git submodule update --init
 ```bash
 git submodule update --remote
 git add cse-101-public-tests
-git commit -m "add pa{ID} cse 101 public tests"
+git commit -m "add new test files"
 git push
 ```
 

@@ -1,10 +1,12 @@
-## Phil Liu
-## phzliu
 ## 2024 Fall CSE101 PA1
-## README.md
-## README for PA1
 
-This project implements a lexical sorterusing a doubly linked list data structure in C. 
+Phil Liu
+phzliu
+README.md
+
+## Description for PA1
+
+This project implements a lexical sorter using a doubly linked list data structure in C. 
 The main components include a list ADT, a test file for the list, and a lexer that reads from an input file and returns the sorted input to an output file.
 
 ## Project Structure

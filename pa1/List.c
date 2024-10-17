@@ -24,7 +24,7 @@ typedef struct NodeObj{
    Node prev;
 } NodeObj;
 
-// private ListObj type
+// private QueueObj type
 typedef struct ListObj{
    Node front;
    Node back;
@@ -47,17 +47,17 @@ Node newNode(int data){
    return(N);
 }
 
+
 // freeNode()
 // Frees heap memory pointed to by *pN, sets *pN to NULL.
 void freeNode(Node* pN){
-   if( pN!=NULL && *pN!=NULL ){
+   if( pN!=NULL && *pN!=NULL ) {
       free(*pN);
       *pN = NULL;
    }
 }
 
-// newList()
-// Returns reference to new empty List object.
+// Creates and returns a new empty List.
 List newList(){
    List L;
    L = malloc(sizeof(ListObj));
@@ -68,8 +68,9 @@ List newList(){
    return(L);
 }
 
-// freeList()
-// Frees all heap memory associated with List *pL, and sets *pL to NULL.
+
+// Frees all heap memory associated with *pL, and sets
+ // *pL to NULL.
 void freeList(List* pL){
    if(pL!=NULL && *pL!=NULL) { 
       while(length(*pL) != 0) { 
@@ -80,65 +81,64 @@ void freeList(List* pL){
    }
 }
 
+
+
 // Access functions -----------------------------------------------------------
 
-int length(List L){
-   if(L == NULL) {
-        fprintf(stderr, "List Error: Calling getLength() on NULL List\n");
-        exit(EXIT_FAILURE);
+int length(List L) {
+   if (L == NULL) {
+      printf("List error: calling length() on empty list\n");
+      exit(EXIT_FAILURE);
    }
    return L->length;
 }
 
 int index(List L) {
-    if (L == NULL) {
-        fprintf(stderr, "List Error: Calling index() on NULL List\n");
-        exit(EXIT_FAILURE);
-    }
-
+   if (L == NULL) {
+      printf("List error: calling index() on empty list\n");
+      exit(EXIT_FAILURE);
+   }
    return L->index;
 }
 
-int front(List L){
-   if( L==NULL ){
-      fprintf(stderr, "List Error: calling front() on NULL List reference\n");
+int front(List L) {
+   if (L == NULL) {
+      printf("List error: calling front() on empty list\n");
       exit(EXIT_FAILURE);
    }
-   if(length(L) == 0){
-      fprintf(stderr, "List Error: calling front() on an empty List\n");
+   if (length(L) <= 0) {
+      printf("List Error: calling front() on list with length() <= 0\n");
       exit(EXIT_FAILURE);
+   
    }
-   return(L->front->data);
+   return L->front->data;
 }
 
 int back(List L) {
-   if( L==NULL ){
-      fprintf(stderr, "List Error: calling back() on NULL List reference\n");
+   if (L == NULL) {
+      printf("List error: calling back() on empty list\n");
       exit(EXIT_FAILURE);
    }
-   if(length(L) == 0){
-      fprintf(stderr, "List Error: calling back() on an empty List\n");
+   if (length(L) <= 0) {
+      printf("List Error: calling back() on list with length() <= 0\n");
       exit(EXIT_FAILURE);
    }
-   return(L->back->data);
+   return L->back->data;
 }
 
 int get(List L) {
-   if ( L==NULL ) {
-      fprintf(stderr, "List Error: calling get() on NULL List reference\n");
+   if (L == NULL) {
+      printf("List error: calling get() on empty list\n");
       exit(EXIT_FAILURE);
    }
-
-   if(length(L) == 0){
-      fprintf(stderr, "List Error: calling get() on an empty List\n");
+   if (length(L) <= 0) {
+      printf("List Error: calling get() on list with length() <= 0\n");
       exit(EXIT_FAILURE);
    }
-
-   if(index(L) < 0 || L->cursor == NULL){
-      fprintf(stderr, "List Error: calling get() when index is undefined\n");
+   if (index(L) < 0 || L->cursor == NULL) {
+      printf("List Error: calling get() on list with index() < 0\n");
       exit(EXIT_FAILURE);
    }
-
    return L->cursor->data;
 }
 
@@ -180,6 +180,7 @@ void clear(List L) {
 
    L->cursor = NULL;
    L->index = -1;
+
 }
 
 void set(List L, int x) {
@@ -193,34 +194,26 @@ void set(List L, int x) {
    }
 }
 
-void moveFront(List L) {
-   if( L==NULL ){
-      fprintf(stderr, "List Error: calling moveFront() on NULL List reference\n");
-      exit(EXIT_FAILURE);
-   }   
-
-   if(length(L) == 0){
-      fprintf(stderr, "List Error: calling moveFront() on an empty List\n");
+void moveFront(List L) { // fixed
+   if (L == NULL) {
+      printf("List error: calling mvoeFront() on NULL list\n");
       exit(EXIT_FAILURE);
    }
-
-   L->cursor = L->front;
-   L->index = 0;
+   if (length(L) > 0) {
+      L->cursor = L->front;
+      L->index = 0;
+   }
 }
 
-void moveBack(List L) {
-   if( L==NULL ){
-      fprintf(stderr, "List Error: calling moveBack() on NULL List reference\n");
-      exit(EXIT_FAILURE);
-   }   
-
-   if(length(L) == 0){
-      fprintf(stderr, "List Error: calling moveBack() on an empty List\n");
+void moveBack(List L) { // fixed
+   if (L == NULL) {
+      printf("List error: calling mvoeBack() on NULL list\n");
       exit(EXIT_FAILURE);
    }
-
-   L->cursor = L->back;
-   L->index = L->length - 1;
+   if (length(L) > 0) {
+      L->cursor = L->back;
+      L->index = length(L) - 1;
+   }
 }
 
 void movePrev(List L) {
@@ -245,6 +238,7 @@ void movePrev(List L) {
       }
    }
 }
+
 
 void moveNext(List L) {
    if( L==NULL ){
@@ -364,6 +358,7 @@ void insertAfter(List L, int data) {
    }
 }
 
+
 void deleteFront(List L){
    Node N = NULL;
 
@@ -455,25 +450,24 @@ void delete(List L) {
    L->index = -1;
 }
 
-// Other Functions ------------------------------------------------------------
+// Other operations -----------------------------------------------------------
 
-void printList(FILE* out, List L){
-   if( out== NULL ) {
-      fprintf(stderr, "List Error: calling printList() on NULL output\n");
+void printList(FILE* out, List L) {  //fixed
+   if (L == NULL) {
+      printf("List error: calling printList() on NULL list\n");
+      exit(EXIT_FAILURE);
+   }
+   if (out == NULL) {
+      printf("List error: calling printList on NULL outfile");
       exit(EXIT_FAILURE);
    }
 
-   if( L==NULL ){
-      fprintf(stderr, "List Error: calling printList() on NULL List reference\n");
-      exit(EXIT_FAILURE);
-   }
-
-   Node N = NULL;
-
-   for (N = L->front; N != NULL; N = N->next) {
+   Node N = L->front;
+   while (N != NULL) {
       fprintf(out, "%d ", N->data);
+      N = N->next;
    }
-
+   fprintf(out, "\n");
 }
 
 List copyList(List L) {
@@ -492,4 +486,22 @@ List copyList(List L) {
    }
 
    return copy;
+}
+
+
+List concatList(List A, List B) { // added
+   List C = newList();
+   Node N = A->front;
+   Node M = B->front;
+   while (N != NULL) {
+      append(C, N->data);
+      N = N->next;
+   }
+   while (M != NULL) {
+      append(C, M->data);
+      M = M->next;
+   }
+   C->cursor = NULL;
+   C->index = -1;
+   return C;
 }
